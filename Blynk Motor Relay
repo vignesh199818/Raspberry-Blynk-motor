@@ -1,0 +1,37 @@
+
+import RPi.GPIO as GPIO
+import blynklib
+
+GPIO.setmode(GPIO.BOARD) 
+GPIO.setup(3,GPIO.OUT) 
+
+GPIO.setwarnings(False)
+ 
+
+BLYNK_AUTH = 'uetsA_7kM57eiulak9_ePU6p0XwcC6lS'
+
+# initialize Blynk
+blynk = blynklib.Blynk(BLYNK_AUTH)
+
+
+
+# register handler for virtual pin V4 write event
+
+@blynk.handle_event('write V4')
+def write_virtual_pin_handler(pin, value):
+    if int (format(value[0]))==1:    
+        GPIO.output(3,1)
+        print("Relay ON") 
+    else:
+        GPIO.output(3,0)
+        print("Relay OFF")
+
+   
+
+
+###########################################################
+# infinite loop that waits for event
+###########################################################
+while True:
+    blynk.run()
+
